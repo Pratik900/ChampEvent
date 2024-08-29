@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import config from "../config.json" assert { type: "json" };
+import config from "../assert/config.json" assert { type: "json" };
 
 
 const connectDb = async()=>{

@@ -1,7 +1,7 @@
 // const userModel = require("../models/userModel")
 import bcrypt from "bcrypt"
 import JWT from "jsonwebtoken"
-import config from '../config.json' assert{type:"json"}
+import config from "../assert/config.json" assert { type: "json" };
 import { userModel } from "../models/userModel.js"
 
 // REGISTER
