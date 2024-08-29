@@ -1,17 +1,10 @@
 import express, { response } from 'express'; 
-import mongoose from 'mongoose';
+import { connectDb } from './config/configDb.js';
+import { authRoutes } from './routes/authRoutes.js';
 
 const app=express();
 app.use(express.json());
-
-const connectDb = async()=>{
-    try{
-        await mongoose.connect('mongodb://127.0.0.1/EventChamp',); 
-        console.log("connected to database...!");
-    } catch(error){
-        console.log("Error db not connected");
-    }
-}
+app.use("/",authRoutes)
 
 app.get("/",async(request,response)=>{
     try{

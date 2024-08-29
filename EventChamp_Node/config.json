@@ -1,0 +1,6 @@
+{
+    "PORT" : 8080,
+    "MONGO_URL" : "mongodb+srv://02007Tikg:02007Tikg@cluster0.2jxzo.mongodb.net/",
+    "JWT_SECRET":"secret_key",
+    "HASH_SALT":10
+}
