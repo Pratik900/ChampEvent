@@ -1,7 +1,7 @@
 // const userModel = require("../models/userModel")
 import bcrypt from "bcrypt"
 import JWT from "jsonwebtoken"
-import config from "../assert/config.json" assert { type: "json" };
+import config from "../asset/config.json" assert { type: "json" };
 import { userModel } from "../models/userModel.js"
 
 // REGISTER
@@ -86,11 +86,12 @@ const loginController=async(req,res)=>{
         const token=JWT.sign({id:user._id},config.JWT_SECRET,{expiresIn:"7d"})
 
         // Login user
-        res.status(200).send({
+        res.user = user;
+        res.status(200).cookie('token',token,{httpOnly:true}).cookie('role',user.userType,{httpOnly:true}).send({
             success:true,
             message:'Login successful',
             token,
-            user,
+            user
         })
     }
     catch(error){

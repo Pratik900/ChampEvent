@@ -1,12 +1,12 @@
 // const JWT=require('jsonwebtoken')
-import {JWT} from "jsonwebtoken"
-import config from "../config.json" assert { type: "json" };
+import JWT from "jsonwebtoken"
+import config from "../asset/config.json" assert { type: "json" };
 
 
 const checkAccess=async(req,res,next)=>{
     try{
         // get token from req body
-        const token=req.headers['authorization'].split(" ")[1]
+        const {token}=req.cookies
         await JWT.verify(token,config.JWT_SECRET,(err,decode)=>{
             if(err)
             {
@@ -30,3 +30,16 @@ const checkAccess=async(req,res,next)=>{
         })
     }
 }
+
+const isAdmin =  async(req,res,next)=>{
+    const {role} = req.cookies
+    if (role != 0){
+       return res.json({
+        success:false,
+        message:'access denied please login as admin'
+       })
+    }
+    next();
+}
+
+export {checkAccess,isAdmin}
