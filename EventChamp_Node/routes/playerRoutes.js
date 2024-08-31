@@ -4,6 +4,6 @@ import { checkAccess, isAdmin } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.post("/entryform",isAdmin,checkAccess,playerController);
+router.post("/entryform",checkAccess,isAdmin,playerController);
 
 export {router as playerRoutes}

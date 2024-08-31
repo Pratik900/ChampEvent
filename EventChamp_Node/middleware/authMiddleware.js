@@ -32,8 +32,8 @@ const checkAccess=async(req,res,next)=>{
 }
 
 const isAdmin =  async(req,res,next)=>{
-    const {role} = req.cookies
-    const isMatch=await bcrypt.compare("0",role)
+    const {access} = req.cookies
+    const isMatch=await bcrypt.compare("0",access)
     if (isMatch === false){
        return res.json({
         success:false,

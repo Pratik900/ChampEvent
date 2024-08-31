@@ -87,7 +87,7 @@ const loginController=async(req,res)=>{
 
         // Login user
         res.user = user;
-        var salt=bcrypt.genSaltSync(config.HASH_SALT_ROLE)
+        var salt=bcrypt.genSaltSync(config.HASH_SALT)
         const acessrole =await bcrypt.hash(user.userType,salt)
         res.status(200).cookie('token',token,{httpOnly:true}).cookie('access',acessrole,{httpOnly:true}).send({
             success:true,

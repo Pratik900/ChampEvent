@@ -4,9 +4,9 @@ import { authRoutes } from './routes/authRoutes.js';
 import { playerRoutes } from './routes/playerRoutes.js';
 import cookieParser from 'cookie-parser';
 
-const app=express();
-app.use(express.json());
-app.use(cookieParser());
+const app=express()
+app.use(express.json())
+app.use(cookieParser())
 app.use("/",authRoutes)
 app.use("/",playerRoutes)
 
