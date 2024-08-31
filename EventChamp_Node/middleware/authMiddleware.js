@@ -1,5 +1,5 @@
-// const JWT=require('jsonwebtoken')
 import JWT from "jsonwebtoken"
+import bcrypt from "bcrypt"
 import config from "../asset/config.json" assert { type: "json" };
 
 
@@ -33,10 +33,23 @@ const checkAccess=async(req,res,next)=>{
 
 const isAdmin =  async(req,res,next)=>{
     const {role} = req.cookies
-    if (role != 0){
+    const isMatch=await bcrypt.compare("0",role)
+    if (isMatch === false){
        return res.json({
         success:false,
-        message:'access denied please login as admin'
+        message:'access denied please login as Admin'
+       })
+    }
+    next();
+}
+
+const isrefree =  async(req,res,next)=>{
+    const {role} = req.cookies
+    const isMatch=await bcrypt.compare("1",role)
+    if (isMatch === false){
+       return res.json({
+        success:false,
+        message:'access denied please login as Refree'
        })
     }
     next();

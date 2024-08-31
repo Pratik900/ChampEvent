@@ -19,12 +19,12 @@ const userSchema=new mongoose.Schema({
         required:[true,'phone number is required'],
     },
     userType:{
-        type:Number,
+        type:String,
         required:[false,'user type is required'],
-        default: 2,
-        enum:[  0/*admin*/,
-                1 /*referee*/,
-                2/*user*/ 
+        default: '2',
+        enum:[  '0'/*admin*/,
+                '1' /*referee*/,
+                '2'/*user*/ 
         ]
     },
     profile:
