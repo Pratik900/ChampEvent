@@ -5,9 +5,7 @@ export const PlayerService = async (formData) => {
     .post("http://localhost:4900/entryform", formData)
     .then((response) => {
       console.log(response.data);
-      if (!response.data.success) {
         alert(response.data.message);
-      }
     })
     .catch((err) => {
       alert(err.response.data.message);
