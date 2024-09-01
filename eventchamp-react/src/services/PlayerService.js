@@ -1,11 +1,15 @@
 import axios from "axios";
 
-
-export const PlayerService =async (formData) => {
-    try{
-        const response=await axios.post("http://localhost:4900/entryform",formData)
-        return response.data
-    }catch(error){
-        console.log(error)
-    }
+export const PlayerService = async (formData) => {
+  axios
+    .post("http://localhost:4900/entryform", formData)
+    .then((response) => {
+      console.log(response.data);
+      if (!response.data.success) {
+        alert(response.data.message);
+      }
+    })
+    .catch((err) => {
+      alert(err.response.data.message);
+    });
 };

@@ -3,6 +3,13 @@ import {playerModel} from '../models/playerModel.js'
 const playerController = async(req,res)=>{
     try{
         const{gameType,firstPlayerName,secondPlayerName,age,aadhar,contact,instaId} =req.body
+        console.log(gameType)
+        console.log(firstPlayerName)
+        console.log(secondPlayerName)
+        console.log(age)
+        console.log(aadhar)
+        console.log(contact)
+        console.log(instaId)
         if(!gameType||!firstPlayerName||!age||!aadhar||!contact)
         {
             return res.status(500).send({

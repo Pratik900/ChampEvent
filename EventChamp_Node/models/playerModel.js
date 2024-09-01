@@ -17,6 +17,10 @@ const playerSchema=new mongoose.Schema({
         type:Number,
         required:[true,'age is required']
     },
+    contact:{
+        type:String,
+        required:[true,'phone number is required'],
+    },
     aadhar:{
         type:Number,
         required:[false,'aadhar is required'],

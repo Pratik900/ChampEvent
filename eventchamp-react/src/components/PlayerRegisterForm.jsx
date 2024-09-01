@@ -5,12 +5,12 @@ import { PlayerService } from '../services/PlayerService';
 export const PlayerRegisterForm=()=> {
   const [formData, setFormData] = useState({
     gameType: '',
-    firstName: '',
+    firstPlayerName: '',
     secondPlayerName: '',
     age: '',
     contact: '',
     instaId: '',
-    aadharNo: '',
+    aadhar: '',
   });
 
   const handleChange = (event) => {
@@ -26,7 +26,7 @@ export const PlayerRegisterForm=()=> {
     // const aadharPattern = /^\d{12}$/;
     const aadharPattern = /^\d{12}$/
     const aadharPattern2=/^\d{4}\s\d{4}\s\d{4}$/;
-    if (!(aadharPattern.test(formData.aadharNo)|| aadharPattern2.test(formData.aadharNo))) {
+    if (!(aadharPattern.test(formData.aadhar)|| aadharPattern2.test(formData.aadhar))) {
       alert('Aadhar number must be a 12-digit numeric value.');
         return
     }
@@ -57,13 +57,13 @@ export const PlayerRegisterForm=()=> {
               </Form.Control>
             </Form.Group>
             <br></br>
-            <Form.Group controlId="firstName" className="mb-3">
+            <Form.Group controlId="firstPlayerName" className="mb-3">
               <Form.Label style={{ fontWeight: 'bold', color: '#555' }}>First Name </Form.Label>
               <Form.Control 
                 type="text" 
                 placeholder="Enter first name" 
-                name="firstName" 
-                value={formData.firstName} 
+                name="firstPlayerName" 
+                value={formData.firstPlayerName} 
                 onChange={handleChange} 
                 required
                 style={{ color: '#555', borderColor: '#ddd' }}
@@ -126,13 +126,13 @@ export const PlayerRegisterForm=()=> {
             </Form.Group>
             <br></br>
 
-            <Form.Group controlId="aadharNo" className="mb-3">
+            <Form.Group controlId="aadhar" className="mb-3">
               <Form.Label style={{ fontWeight: 'bold', color: '#555' }}>Aadhar Number </Form.Label>
               <Form.Control 
                 type="text" 
                 placeholder="Enter Aadhar number" 
-                name="aadharNo" 
-                value={formData.aadharNo} 
+                name="aadhar" 
+                value={formData.aadhar} 
                 onChange={handleChange} 
                 required
                 style={{ color: '#555', borderColor: '#ddd' }}
