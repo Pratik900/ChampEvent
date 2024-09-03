@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { PlayerService } from '../services/PlayerService';
 
 export const PlayerRegisterForm=()=> {
   const [formData, setFormData] = useState({
-    gameType: '',
+    gameType: 'Singles',
     firstPlayerName: '',
     secondPlayerName: '',
     age: '',
@@ -12,6 +12,7 @@ export const PlayerRegisterForm=()=> {
     instaId: '',
     aadhar: '',
   });
+
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -46,11 +47,13 @@ export const PlayerRegisterForm=()=> {
                 as="select" 
                 name="gameType" 
                 value={formData.gameType} 
-                onChange={handleChange} 
+                onChange={(e)=>{
+                  if(e.target.value==="Singles")
+                  setFormData({ ...formData, [formData.secondPlayerName]:null })
+                handleChange(e)}} 
                 required
                 style={{ color: '#555', borderColor: '#ddd' }}
               >
-                <option value="">Select game type</option>
                 <option value="Singles">Singles</option>
                 <option value="Doubles">Doubles</option>
                 {/* Add more game types as needed */}
@@ -64,14 +67,17 @@ export const PlayerRegisterForm=()=> {
                 placeholder="Enter first name" 
                 name="firstPlayerName" 
                 value={formData.firstPlayerName} 
-                onChange={handleChange} 
+                onChange={
+                  handleChange} 
                 required
                 style={{ color: '#555', borderColor: '#ddd' }}
               />
             </Form.Group>
             <br></br>
+
+            {formData.gameType==="Doubles"?<>
             <Form.Group controlId="secondPlayerName" className="mb-3">
-              <Form.Label style={{ fontWeight: 'bold', color: '#555' }}>Second Player Name</Form.Label>
+              <Form.Label id="secondPlayerNameLabel" style={{ fontWeight: 'bold', color: '#555' }}>Second Player Name</Form.Label>
               <Form.Control 
                 type="text" 
                 placeholder="Enter second player name" 
@@ -82,6 +88,7 @@ export const PlayerRegisterForm=()=> {
               />
             </Form.Group>
             <br></br>
+            </>:null}
 
             <Form.Group controlId="age" className="mb-3">
               <Form.Label style={{ fontWeight: 'bold', color: '#555' }}>Age </Form.Label>

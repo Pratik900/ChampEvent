@@ -11,14 +11,6 @@ const playerController = async (req, res) => {
       contact,
       instaId,
     } = req.body;
-    // console.log(gameType);
-    // console.log(firstPlayerName);
-    // console.log(secondPlayerName);
-    // console.log(age);
-    // console.log(aadhar);
-    // console.log(contact);
-    // console.log(instaId);
-    // console.log(aadhar);
     const final_aadhar = aadhar.replace(/\s+/g, "");
     if (!gameType || !firstPlayerName || !age || !final_aadhar || !contact) {
       return res.status(500).send({
@@ -34,12 +26,12 @@ const playerController = async (req, res) => {
         message: "Aadhar No. already exists.",
       });
     }
-    if (!secondPlayerName) {
+    if (secondPlayerName && gameType === "Singles") {
       const player = await playerModel.create({
         gameType,
         firstPlayerName,
         age,
-        aadhar:final_aadhar,
+        aadhar: final_aadhar,
         contact,
         instaId,
       });
@@ -53,7 +45,7 @@ const playerController = async (req, res) => {
         firstPlayerName,
         secondPlayerName,
         age,
-        aadhar:final_aadhar,
+        aadhar: final_aadhar,
         contact,
         instaId,
       });
