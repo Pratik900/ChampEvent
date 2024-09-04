@@ -5,7 +5,8 @@ export const Home = () => {
   return (
     <>
     <div>Home component</div>
-    <div><Link to="/entryform">Link</Link></div>
+    <div><Link to="/entryform">entryfrom</Link></div>
+    <div><Link to="/playerslotting">Playerslotting</Link></div>
     </>
   )
 }
