@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { PlayerService } from '../services/PlayerService';
 
@@ -85,6 +85,7 @@ export const PlayerRegisterForm=()=> {
                 value={formData.secondPlayerName} 
                 onChange={handleChange} 
                 style={{ color: '#555', borderColor: '#ddd' }}
+                required
               />
             </Form.Group>
             <br></br>
