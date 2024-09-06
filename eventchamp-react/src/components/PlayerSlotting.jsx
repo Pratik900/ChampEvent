@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { useState ,forwardRef} from 'react';
-import {  Form,Row,Col, InputGroup } from 'react-bootstrap';
+import {  Form,Row,Col, InputGroup, Alert } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css'
 import { useNavigate } from 'react-router-dom';
@@ -16,12 +16,15 @@ const PlayerSlotting=()=> {
     const navigate=useNavigate()
     const [show, setShow] = useState(true);
     const [enableSubmit,setEnableSubmit] = useState(false)
+    const[showAlert,setShowAlert]=useState(false)
+    const [alertData,setAlertData] = useState('')
     const [formData,setFormData]=useState({gameType:'Singles',from:new Date(),to:new Date(),players:{}});
     const handleClose = () => navigate('/');
     const[loading,setLoading]=useState(false)
     const [progress,setProgress] = useState(0)
     // const handleShow = () => setShow(true);
     const handleSubmit=async (e)=>{
+        setShow(false)
         setLoading(true);
         e.preventDefault();
         // console.log(`http://localhost:4900/playerslotting/${formData.gameType}/${formData.from}/${formData.to}`)
@@ -29,11 +32,11 @@ const PlayerSlotting=()=> {
         finalFromDate.setHours(0,0,0)
         const finalToDate=new Date(formData.to)
         finalToDate.setHours(23,59,59)
-        console.log(`http://localhost:4900/playerslotting/${formData.gameType}/${finalFromDate}/${finalToDate}`)
-        axios.get(`http://localhost:4900/playerslotting/${formData.gameType}/${finalFromDate}/${finalToDate}`).then(response=>{
+        // console.log(`http://localhost:4900/playerslotting/${formData.gameType}/${finalFromDate}/${finalToDate}`)
+        axios.get(`http://localhost:4900/playerslotting/${formData.gameType}/${finalFromDate}/${finalToDate}`).then(async response=>{
             // console.log(response.data)
+            await sleep(2000)
             setFormData({...formData,'players':response.data.player})
-            setShow(false)
         }).catch(err=>{
             // console.log(err.response.status)
             if (err.response.status===404) 
@@ -56,17 +59,39 @@ const PlayerSlotting=()=> {
         const todate=new Date(formData.to);
         if(fromdate<=todate){
             setEnableSubmit(true)
-            setProgress(10)
+            setAlertData('')
+            setShowAlert(false)
+            // setProgress(10)
         }
         else{
             setEnableSubmit(false)
+            setAlertData(<><strong>FROM</strong> date must be greater than <strong>TO</strong> date</>)
+            setShowAlert(true)
         }
     },[formData.from, formData.to])
+    const sleep=(ms)=> {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
+
+    const loadingAnimation=async ()=>{
+        setProgress(25)
+        await sleep(3000)
+        setProgress(50)
+        await sleep(6000)
+        await setProgress(75)
+        await sleep(9000)
+        setProgress(100)
+        setLoading(false)
+    }
     useEffect(()=>{
         console.log('generateSlottings')
+        if(formData.players.length>0)
+            setLoading(false)
+        else
+        setLoading(true)
+        // loadingAnimation()
         // while(progress!==100)
-        setLoading(false)
-    },[formData.players,progress])
+    },[formData.players])
     const CustomDateInput = forwardRef(({ value, onClick }, ref) => (
         <InputGroup>
           <Form.Control
@@ -86,6 +111,7 @@ const PlayerSlotting=()=> {
   
     return (
       <>{show?<>
+        
       <Modal show={show} onHide={handleClose} centered>
           <Modal.Header closeButton>
             <Modal.Title>Players Slotting</Modal.Title>
@@ -131,9 +157,13 @@ const PlayerSlotting=()=> {
           </Form>
           </Modal.Body>
           <Modal.Footer>
+            <Row>
+                <Col>
             <Button variant="secondary" onClick={handleClose}>
               Close
             </Button>
+                </Col>
+                <Col>
             {enableSubmit?
             <>
             <Button type="submit" variant="primary" onClick={handleSubmit} >
@@ -145,18 +175,27 @@ const PlayerSlotting=()=> {
               Submit
             </Button>
             </>}
+                </Col>
+            </Row>
+            <Row className='w-100'>
+                <Col>
+            <Alert key='alert' variant='danger' className='p-2 text-center' show={showAlert}>{alertData}</Alert>
+                </Col>
+            </Row>
           </Modal.Footer>
         </Modal>
         </>:
         <>
         {/* this is the content generated dynamically */}
-        <Loading show={loading} progress={progress}/>
-        {formData.players.map((data,index)=>{
-            return <div key={index}>
-            <span>{data.firstPlayerName}</span>
-            {data.secondPlayerName?<span>{data.secondPlayerName}</span>:null}
-            </div>
-        })}
+        {loading?<Loading show={loading}/>:
+        <>
+            {formData.players.map((data,index)=>{
+                return <div key={index}>
+                <span>{data.firstPlayerName}</span>
+                {data.secondPlayerName?<span>{data.secondPlayerName}</span>:null}
+                </div>
+            })}
+        </>}
         </>}
         
       </>

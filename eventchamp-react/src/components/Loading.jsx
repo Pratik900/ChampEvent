@@ -1,19 +1,30 @@
 import React from "react";
-import {  Modal, ProgressBar  } from "react-bootstrap";
-const Loading = ({show,progress}) => {
+import {  Modal, Spinner,Button  } from "react-bootstrap";
+const Loading = ({show}) => {
   return (<>
   <Modal
     show={show}
     centered
     backdrop="static"
     keyboard={false}
-    className=""
+    className="p-0"
   >   
-    <Modal.Body className="text-end">
-      <ProgressBar animated now={progress}  className="border border-0 text-center p-0" role="status">
-        {/* <span className="text-center w-100"><strong>Loading...</strong></span> */}
-      </ProgressBar>
-      <span className="mx-auto">{progress}%</span>
+    <Modal.Body className="text-end p-0 text-center w-0 bg-primary rounded" style={{backgroundColor:'transparent'}}>
+
+      <Button variant="primary p-3 text-center" disabled>
+        <Spinner
+        className="text-center"
+          as="span"
+          animation="grow"
+          size="sm"
+          role="status"
+          aria-hidden="true"
+        />
+          <span className="h4">
+            &nbsp;Loading...
+            </span>
+          
+      </Button>
 
     </Modal.Body>
   </Modal>
