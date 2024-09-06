@@ -13,7 +13,7 @@ const playerSlottingController = async (req, res) => {
       entryDate: { $gte: fromDate, $lte: toDate },
     });
     if (player.length===0) {
-      return res.status(404).send({
+      return res.status(204).send({
         success: false,
         message: "No player found",
       });
