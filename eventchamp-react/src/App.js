@@ -10,7 +10,7 @@ export const App=() =>{
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home message="Welcome!"/>} />
           <Route path="/entryform" element={<PlayerRegisterForm />} />
           <Route path="/playerslotting" element={ <PlayerSlotting/>} />
         </Routes>
