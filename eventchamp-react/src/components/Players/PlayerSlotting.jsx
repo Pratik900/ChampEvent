@@ -5,16 +5,18 @@ import { useState ,forwardRef} from 'react';
 import {  Form,Row,Col, InputGroup, Alert } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css'
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {  FaCalendarAlt } from 'react-icons/fa';
-import { Loading } from './Loading';
-import { PlayerSlottingService } from '../services/PlayerService';
-import {UserAlert} from './UserAlert';
+import { Loading } from '../Common/Loading';
+import { PlayerSlottingService } from '../../services/PlayerService';
+import {UserAlert} from '../Common/UserAlert';
+import { SinglesSlotting } from './SinglesSlotting';
 
 
 
 const PlayerSlotting=()=> {
     const navigate=useNavigate()
+    const location=useLocation()
     const [show, setShow] = useState(true);
     const [enableSubmit,setEnableSubmit] = useState(false)
     const[showAlert,setShowAlert]=useState(false)
@@ -35,6 +37,7 @@ const PlayerSlotting=()=> {
 
     try{
         const response=await PlayerSlottingService(formData)
+        console.log(response)
         if(!response.data.player===undefined){
             setLoading(false)
             setShow(true)
@@ -65,30 +68,41 @@ const PlayerSlotting=()=> {
     const handleToDateChange=(date)=>{
         setFormData({...formData,'to':new Date(date)})
     }
-    useEffect(()=>{
-        // perform date validation on both datepickers
-        const fromdate=new Date(formData.from);
-        const todate=new Date(formData.to);
-        if(fromdate<=todate){
-            setEnableSubmit(true)
-            setAlertMessage('')
-            setShowAlert(false)
-            // setProgress(10)
-        }
-        else{
-            setEnableSubmit(false)
-            setAlertMessage(<><strong>FROM</strong> date must be greater than <strong>TO</strong> date</>)
-            setShowAlert(true)
-        }
-    },[formData.from, formData.to])
+    // useEffect(()=>{
+    //     // perform date validation on both datepickers
+    //     const fromdate=new Date(formData.from);
+    //     const todate=new Date(formData.to);
+    //     if(fromdate<=todate){
+    //         setEnableSubmit(true)
+    //         setAlertMessage('')
+    //         setShowAlert(false)
+    //         // setProgress(10)
+    //       }
+    //       else{
+    //         // setEnableSubmit(false)
+    //         // setAlertMessage(<><strong>FROM</strong> date must be greater than <strong>TO</strong> date</>)
+    //         // setShowAlert(true)
+    //         console.log("reached")
+    //         setUserAlertColor('warning')
+    //         setUserAlertMessage(<><strong>FROM</strong> date must be greater than <strong>TO</strong> date</>)
+    //         setShowUserAlert(true)
+    //     }
+    // },[formData.from, formData.to])
 
     useEffect(()=>{
+      const fromdate=new Date(formData.from);
+        const todate=new Date(formData.to);
         if(formData.players!==undefined && formData.players.length>0){
             setShowUserAlert(false)
             // setUserAlertMessage('Data fetched successfully!')
             // setUserAlertColor('success')
             setLoading(false)
-            navigate('/',{state:{message:"Slottings generated"}})
+            // if(formData.gameType==='Singles')
+            // navigate('/playerslotting/singlesslotting',{state:{message:"Singles Slottings generated"},replace:true})
+            // else if(formData.gameType==='Doubles')
+            //   navigate('/playerslotting/doublesslotting',{state:{message:"Doubles Slottings generated"},replace:true})
+            // else
+            // navigate('/',{state:{message:"Error in slots generation"},replace:true})
         }
         else if (formData.players===undefined){
             setFormData({...formData,'players':{}})
@@ -99,11 +113,22 @@ const PlayerSlotting=()=> {
             // sleep(3000)
             setShow(true)
         }
+        else if(fromdate>todate){
+          setLoading(false)
+            console.log("reached")
+            // setEnableSubmit(false)
+            setUserAlertColor('warning')
+            setUserAlertMessage(<><strong>FROM</strong> date must be less than or equal to <strong>TO</strong> date</>)
+            setShowUserAlert(true)
+        }
+        else if (fromdate<=todate){
+          setEnableSubmit(true)
+        }
         else
         setLoading(true)
         // loadingAnimation()
         // while(progress!==100)
-    },[formData])
+    },[formData,navigate])
     const CustomDateInput = forwardRef(({ value, onClick }, ref) => (
         <InputGroup>
           <Form.Control
@@ -122,7 +147,8 @@ const PlayerSlotting=()=> {
       ));
   
     return (
-      <>{show?<>
+      <>
+      {show?<>
         <UserAlert  show ={showUserAlert} color={userAlertColor} message={userAlertMessage}></UserAlert>
       <Modal show={show} onHide={handleClose} backdrop="static" centered>
           <Modal.Header closeButton>
@@ -191,7 +217,7 @@ const PlayerSlotting=()=> {
             </Row>
             <Row className='w-100'>
                 <Col>
-            <Alert key='alert' variant='danger' className='p-2 text-center' show={showAlert}>{alertMessage}</Alert>
+            {/* <Alert key='alert' variant='danger' className='p-2 text-center' show={showAlert}>{alertMessage}</Alert> */}
                 </Col>
             </Row>
           </Modal.Footer>
@@ -199,16 +225,16 @@ const PlayerSlotting=()=> {
         </>:
         <>
         {/* this is the content generated dynamically */}
-        {loading?<><Loading show={loading}/></>:
-        <>
-        <UserAlert  show ={showUserAlert} color={userAlertColor} message={userAlertMessage}></UserAlert>
-            {formData.players.map((data,index)=>{
-                return <div key={index}>
-                <span>{data.firstPlayerName}</span>
-                {data.secondPlayerName?<span>{data.secondPlayerName}</span>:null}
-                </div>
-            })}
-        </>}
+        {loading?<><Loading show={loading}/></>:formData.gameType==="Singles"?<>{navigate("/playerslotting/singlesslotting")}</>:formData.gameType==="Doubles"?<>{navigate("/playerslotting/doublesslotting")}</>:<>{navigate("/",{replace:true,state:null})}</>
+        // <>
+        //     {formData.players.map((data,index)=>{
+        //         return <div key={index}>
+        //         <span>{data.firstPlayerName}</span>
+        //         {data.secondPlayerName?<span>{data.secondPlayerName}</span>:null}
+        //         </div>
+        //     })}
+        // </>
+        }
         </>}
         
       </>

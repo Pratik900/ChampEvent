@@ -1,8 +1,12 @@
-import React, {  useState } from 'react';
+import React, {  useEffect, useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
-import { PlayerService } from '../services/PlayerService';
+import { PlayerService } from '../../services/PlayerService';
+import { useLocation } from 'react-router-dom';
+import { UserAlert } from '../Common/UserAlert';
 
 export const PlayerRegisterForm=()=> {
+  const location=useLocation()
+  const [message, setMessage] = useState('Player registration');
   const [formData, setFormData] = useState({
     gameType: 'Singles',
     firstPlayerName: '',
@@ -13,7 +17,11 @@ export const PlayerRegisterForm=()=> {
     aadhar: '',
   });
 
-
+  useEffect(()=>{
+    if (location.state) {
+      setMessage(location.state.message);
+    }
+  })
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
@@ -36,6 +44,7 @@ export const PlayerRegisterForm=()=> {
 
   return (
     <Container className="">
+      <UserAlert show={true}message={message}/>
       <Row className="justify-content-center">
         <Col md={6}>
           <Form onSubmit={handleSubmit} className="p-4 shadow-sm rounded" style={{ backgroundColor: '#ffffff' }}>
