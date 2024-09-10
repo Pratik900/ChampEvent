@@ -21,7 +21,7 @@ export const PlayerRegisterForm=()=> {
     if (location.state) {
       setMessage(location.state.message);
     }
-  })
+  },[location.state])
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });

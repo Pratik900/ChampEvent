@@ -2,25 +2,19 @@ import React, { useEffect } from 'react'
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { useState ,forwardRef} from 'react';
-import {  Form,Row,Col, InputGroup, Alert } from 'react-bootstrap';
+import {  Form,Row,Col, InputGroup } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css'
-import { useLocation, useNavigate } from 'react-router-dom';
-import {  FaCalendarAlt } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
+import { FaCalendarAlt } from 'react-icons/fa';
 import { Loading } from '../Common/Loading';
 import { PlayerSlottingService } from '../../services/PlayerService';
 import {UserAlert} from '../Common/UserAlert';
-import { SinglesSlotting } from './SinglesSlotting';
-
-
 
 const PlayerSlotting=()=> {
     const navigate=useNavigate()
-    const location=useLocation()
     const [show, setShow] = useState(true);
     const [enableSubmit,setEnableSubmit] = useState(false)
-    const[showAlert,setShowAlert]=useState(false)
-    const [alertMessage,setAlertMessage] = useState('')
     const[showUserAlert,setShowUserAlert]=useState(false)
     const [userAlertMessage,setUserAlertMessage] = useState('')
     const[userAlertColor,setUserAlertColor] = useState('primary')
@@ -68,41 +62,13 @@ const PlayerSlotting=()=> {
     const handleToDateChange=(date)=>{
         setFormData({...formData,'to':new Date(date)})
     }
-    // useEffect(()=>{
-    //     // perform date validation on both datepickers
-    //     const fromdate=new Date(formData.from);
-    //     const todate=new Date(formData.to);
-    //     if(fromdate<=todate){
-    //         setEnableSubmit(true)
-    //         setAlertMessage('')
-    //         setShowAlert(false)
-    //         // setProgress(10)
-    //       }
-    //       else{
-    //         // setEnableSubmit(false)
-    //         // setAlertMessage(<><strong>FROM</strong> date must be greater than <strong>TO</strong> date</>)
-    //         // setShowAlert(true)
-    //         console.log("reached")
-    //         setUserAlertColor('warning')
-    //         setUserAlertMessage(<><strong>FROM</strong> date must be greater than <strong>TO</strong> date</>)
-    //         setShowUserAlert(true)
-    //     }
-    // },[formData.from, formData.to])
 
     useEffect(()=>{
       const fromdate=new Date(formData.from);
         const todate=new Date(formData.to);
         if(formData.players!==undefined && formData.players.length>0){
             setShowUserAlert(false)
-            // setUserAlertMessage('Data fetched successfully!')
-            // setUserAlertColor('success')
             setLoading(false)
-            // if(formData.gameType==='Singles')
-            // navigate('/playerslotting/singlesslotting',{state:{message:"Singles Slottings generated"},replace:true})
-            // else if(formData.gameType==='Doubles')
-            //   navigate('/playerslotting/doublesslotting',{state:{message:"Doubles Slottings generated"},replace:true})
-            // else
-            // navigate('/',{state:{message:"Error in slots generation"},replace:true})
         }
         else if (formData.players===undefined){
             setFormData({...formData,'players':{}})

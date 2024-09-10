@@ -1,53 +1,176 @@
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import { Card } from 'react-bootstrap'
-import { Bracket, RoundProps, Seed, SeedItem, SeedTeam, RenderSeedProps } from 'react-brackets';
+import {Bracket,BracketGame,BracketGenerator} from "react-tournament-bracket";
 
-const SinglesSlotting=()=> {
-    const [players,setPlayers]=useState({})
-    useEffect(()=>{
-        axios.get('http://localhost:4900/singlesslottings').then(response=>{
-            console.log(response.status)
-            console.log(response.data.result)
-            setPlayers(response.data.result)
-        }).catch(err=>{console.log(err.response.error)})
-    },[])
-    const CustomSeed = ({seed, breakpoint, roundIndex, seedIndex}: RenderSeedProps) => {
-      // breakpoint passed to Bracket component
-      // to check if mobile view is triggered or not
+export function SinglesSlotting() {
+  const game2 = {
+    id: "2",
+    name: "semi-finals",
+    scheduled: Number(new Date()),
+    sides: {
+      home: {
+        team: {
+          id: "12",
+          name: "Team oi"
+        },
+        score: {
+          score: 1
+        }
+      },
+      visitor: {
+        team: {
+          id: "13",
+          name: "Team thau"
+        },
+        score: {
+          score: 0
+        }
+      }
+    }
+  };
+  const game3 = {
+    id: "3",
+    name: "semi-finals",
+    scheduled: Number(new Date()),
+    sides: {
+      home: {
+        team: {
+          id: "11",
+          name: "Team q"
+        },
+        score: {
+          score: 1
+        }
+      },
+      visitor: {
+        team: {
+          id: "12",
+          name: "Team bosta"
+        },
+        score: {
+          score: 0
+        }
+      }
+    }
+  };
+  const game1 = {
+    id: "1",
+    name: "semi-finals",
+    scheduled: Number(new Date()),
+    sides: {
+      home: {
+        team: {
+          id: "10",
+          name: "Team meu"
+        },
+        score: {
+          score: 2
+        },
+        seed: {
+          displayName: "A1",
+          rank: 1,
+          sourceGame: game2,
+          sourcePool: {}
+        }
+      },
+      visitor: {
+        team: {
+          id: "11",
+          name: "Team pau"
+        },
+        score: {
+          score: 3
+        },
+        seed: {
+          displayName: "A2",
+          rank: 1,
+          sourceGame: game3,
+          sourcePool: {}
+        }
+      }
+    }
+  };
 
-      // mobileBreakpoint is required to be passed down to a seed
-      return (
-        <Seed mobileBreakpoint={breakpoint} style={{ fontSize: 12 }}>
-          <SeedItem>
-            <div>
-              <SeedTeam style={{ color: 'red' }}>{seed.teams[0]?.name || 'NO TEAM '}</SeedTeam>
-              <SeedTeam>{seed.teams[1]?.name || 'NO TEAM '}</SeedTeam>
-            </div>
-          </SeedItem>
-        </Seed>
-      );
-    };
+  const games = [
+    {
+      id: "1",
+      name: "semi-finals",
+      scheduled: Number(new Date()),
+      sides: {
+        home: {
+          team: {
+            id: "10",
+            name: "Team 1"
+          },
+          score: {
+            score: 2
+          },
+          seed: {
+            displayName: "A1",
+            rank: 1,
+            sourceGame: game2,
+            sourcePool: {}
+          }
+        },
+        visitor: {
+          team: {
+            id: "11",
+            name: "Team 2"
+          },
+          score: {
+            score: 3
+          },
+          seed: {
+            displayName: "A2",
+            rank: 1,
+            sourceGame: game3,
+            sourcePool: {}
+          }
+        }
+      }
+    },
+    {
+      id: "1",
+      name: "semi-finals",
+      scheduled: Number(new Date()),
+      sides: {
+        home: {
+          team: {
+            id: "10",
+            name: "Team 1"
+          },
+          score: {
+            score: 2
+          },
+          seed: {
+            displayName: "A1",
+            rank: 1,
+            sourceGame: game2,
+            sourcePool: {}
+          }
+        },
+        visitor: {
+          team: {
+            id: "11",
+            name: "Team 2"
+          },
+          score: {
+            score: 3
+          },
+          seed: {
+            displayName: "A2",
+            rank: 1,
+            sourceGame: game3,
+            sourcePool: {}
+          }
+        }
+      }
+    }
+  ];
 
   return (
-    <div>SinglesSlotting
-      {/* <Bracket rounds={2} roundTitleComponent={(title: React.ReactNode, roundIndex: number) => {
-      return <div style={{ textAlign: 'center', color: 'red' }}>{title}</div>;
-    }} /> */}
-      {/* {players.map((player,index)=>{
-        return (
-        <>
-      <Card style={{ width: '10rem' }}>
-      <Card.Body>
-        <Card.Title>Match {player.matchNumber}</Card.Title>
-        <Card.Subtitle className="mb-2 text-muted">{player.firstPlayerName}</Card.Subtitle>
-      </Card.Body>
-    </Card>
-      </>
-      )
-  })} */}
-    </div>
-  )
+    <>
+      <Bracket game={game1} />
+      <BracketGame game={game1} />
+      <BracketGenerator game={games} />
+    </>
+  );
 }
-
-export  {SinglesSlotting}
